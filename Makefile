@@ -14,8 +14,15 @@ webdev-build:
 	mkdir build || true
 	webdev build
 
-.PHONY: build-tailwindcss
-build-tailwindcss:
+.PHONY: webdev-install
+webdev-install:
+	dart pub add build_runner build_web_compilers --dev
+	dart pub global activate webdev
+	echo 'export PATH=$$PATH:$$HOME/.pub-cache/bin' >> ~/.bashrc
+	source ~/.bashrc
+
+.PHONY: tailwindcss-build
+tailwindcss-build:
 	npx tailwindcss -i ./build/styles.css -o ./build/dist/output.css
 	
 .PHONY: init
