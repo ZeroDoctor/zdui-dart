@@ -1,5 +1,6 @@
 import 'dart:html';
 
+import 'components/collapse.dart';
 import 'components/navbar.dart';
 
 Element htmlStringToElement(String html) {
@@ -9,42 +10,56 @@ Element htmlStringToElement(String html) {
 }
 
 Future<void> main() async {
-  List<Menu> menus = [
-    Menu(() {
-      AnchorElement a = AnchorElement();
-      a.text = "Logs";
-      return a;
-    }(), []),
-    Menu(() {
-      AnchorElement a = AnchorElement();
-      a.text = "Usage";
-      return a;
-    }(), [
-      Menu(() {
-        AnchorElement a = AnchorElement();
-        a.text = "CPU";
-        return a;
-      }(), []),
-      Menu(() {
-        AnchorElement a = AnchorElement();
-        a.text = "Memory";
-        return a;
-      }(), []),
-    ]),
-    Menu(() {
-      AnchorElement a = AnchorElement();
-      a.text = "Email";
-      return a;
-    }(), []),
+
+  List<Collapse> collapses = [
+    Collapse(
+      Element.span()..text = 'Golden',
+      Element.p()..text = 'checking this out',
+    ),
+    Collapse(
+      Element.span()..text = 'Spurs',
+      Element.p()..text = 'this is it',
+    ),
+    Collapse(
+      Element.span()..text = 'Lakers',
+      Element.p()..text = 'this is all you know',
+    ),
   ];
 
-  Navbar navbar = Navbar("Dashboard", menus);
+  List<Menu> menus = [
+    Menu(Element.a()..text = "Logs", []),
+    Menu(Element.a()
+      ..text = "Usage"
+      ..className = "justify-between", 
+    [
+      Menu(Element.a()..text = "CPU", []),
+      Menu(Element.a()..text = "Memory", []),
+    ]),
+    Menu(Element.a()..text = "Email", []),
+  ];
 
-  // to render components in parallel do:
-  //  List<String> responses = await Future.wait([navbar.render(), navbar.render()]);
+  Navbar navbar = Navbar(
+    Element.a()..text = 'Dashboard', 
+    menus,
+    Element.div()
+  );
 
-  Element renderElement = htmlStringToElement(await navbar.render());
+  List<Element> responses = await Future.wait([navbar.render(), ...collapses.map((e) => e.render())]);
 
-  BodyElement output = querySelector('#output') as BodyElement;
-  output.insertBefore(renderElement, output.firstChild);
+  BodyElement body = querySelector('#output') as BodyElement;
+  body.insertBefore(responses[0], body.firstChild);
+
+  DivElement container = querySelector('#container') as DivElement;
+  List<Element> list = responses
+    .sublist(1)
+    .map(
+      (element) {
+        DivElement div = DivElement();
+        div.className = 'p-1';
+        div.append(element);
+        return div;
+      }
+    ).toList();
+
+  container.children.addAll(list);
 }

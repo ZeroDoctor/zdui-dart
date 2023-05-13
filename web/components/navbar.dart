@@ -1,4 +1,5 @@
 import 'dart:html';
+
 import '../structures/stack.dart';
 import 'component.dart';
 
@@ -15,13 +16,15 @@ class Menu {
 }
 
 class Navbar extends Component {
-  final String _title;
+  final Element _startElement;
   final List<Menu> _menus;
+  final Element _endElement; 
+  final String _className;
 
-  Navbar(this._title, this._menus);
+  Navbar(this._startElement, this._menus, this._endElement, [this._className = '']);
 
   @override
-  Future<String> render() async {
+  Future<Element> render() async {
     StringBuffer menuBuffer = StringBuffer();
 
     Stack<List<Menu>> listMenuStack = Stack<List<Menu>>();
@@ -30,22 +33,21 @@ class Navbar extends Component {
       LIElement rootLi = LIElement();
       rootLi.children.add(menu.element);
       if (menu.subMenus.isNotEmpty) {
+        menu.element.children.add(htmlToElements(svgDropArrow));
         rootLi.setAttribute("tabindex", "0");
-        rootLi.children[0].appendHtml(svgDropArrow);
-
         listMenuStack.push(menu.subMenus);
       }
 
       while (listMenuStack.isNotEmpty) {
         UListElement ul = UListElement();
-        ul.className = "p-2 bg-base-100";
+        ul.className = "p-2";
 
         for (var menu in listMenuStack.pop()) {
           LIElement li = LIElement();
           li.children.add(menu.element);
           if (menu.subMenus.isNotEmpty) {
+            menu.element.children.add(htmlToElements(svgDropArrow));
             li.setAttribute("tabindex", "0");
-            li.children[0].appendHtml(svgDropArrow);
 
             UListElement ul = UListElement();
             listMenuStack.push(menu.subMenus);
@@ -61,18 +63,20 @@ class Navbar extends Component {
       menuBuffer.write(rootLi.outerHtml);
     }
 
-    return """
-<div class="navbar bg-base-100">
+    return htmlToElements("""
+<div class="navbar bg-base-100 z-50 $_className">
   <div class="navbar-start">
     <div class="dropdown">
       <label tabindex="0" class="btn btn-ghost lg:hidden">
         $svgMenu
       </label>
-      <ul class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+      <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
         ${menuBuffer.toString()}
       </ul>
     </div>
-    <a class="btn btn-ghost normal-case text-xl">$_title</a>
+    <a class="btn btn-ghost normal-case text-xl">
+      ${_startElement.outerHtml}
+    </a>
   </div>
 
   <div class="navbar-center hidden lg:flex">
@@ -82,9 +86,9 @@ class Navbar extends Component {
   </div>
 
   <div class="navbar-end">
-    <a class="btn">Get started</a>
+    ${_endElement.outerHtml}
   </div>
 </div>
-    """;
+    """);
   }
 }
