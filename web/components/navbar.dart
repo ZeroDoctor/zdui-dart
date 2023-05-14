@@ -40,7 +40,7 @@ class Navbar extends Component {
 
       while (listMenuStack.isNotEmpty) {
         UListElement ul = UListElement();
-        ul.className = "p-2";
+        ul.className = "p-2 z-50";
 
         for (var menu in listMenuStack.pop()) {
           LIElement li = LIElement();
@@ -74,9 +74,8 @@ class Navbar extends Component {
         ${menuBuffer.toString()}
       </ul>
     </div>
-    <a class="btn btn-ghost normal-case text-xl">
-      ${_startElement.outerHtml}
-    </a>
+
+    ${_startElement.outerHtml}
   </div>
 
   <div class="navbar-center hidden lg:flex">
