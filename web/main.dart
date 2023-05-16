@@ -20,15 +20,16 @@ class Log {
 }
 
 List<Collapse> logsWidget(List<Log> logs) {
-  return logs.map((log) => Collapse(
-    Element.span()..text = log.header, 
-    Element.p()..text = log.body,
-  )).toList();
-} 
+  return logs
+      .map((log) => Collapse(
+            Element.span()..text = log.header,
+            Element.p()..text = log.body,
+          ))
+      .toList();
+}
 
 Future<void> main() async {
-
-  List<Collapse> collapses = logsWidget([
+  List<Collapse> logs = logsWidget([
     Log("Test", "support different loggers?"),
     Log("Okay", "learn more about json and dart"),
     Log("Fetch", "try fetching from api"),
@@ -37,51 +38,46 @@ Future<void> main() async {
 
   List<Menu> menus = [
     Menu(Element.a()..text = "Logs", []),
-    Menu(Element.a()
-      ..text = "Usage"
-      ..className = "justify-between", 
-    [
-      Menu(
+    Menu(
         Element.a()
-          ..className = "bg-base-100"
-          ..text = "CPU", 
-        []
-      ),
-      Menu(
-        Element.a()
-          ..className = "bg-base-100"
-          ..text = "Memory", 
-        []
-      ),
-    ]),
+          ..text = "Usage"
+          ..className = "justify-between",
+        [
+          Menu(
+              Element.a()
+                ..className = "bg-base-100"
+                ..text = "CPU",
+              []),
+          Menu(
+              Element.a()
+                ..className = "bg-base-100"
+                ..text = "Memory",
+              []),
+        ]),
     Menu(Element.a()..text = "Email", []),
   ];
 
   Navbar navbar = Navbar(
-    Element.a()
-      ..className = "btn btn-ghost normal-case text-xl"
-      ..text = 'Dashboard', 
-    menus,
-    Element.div()
-  );
+      Element.a()
+        ..className = "btn btn-ghost normal-case text-xl"
+        ..text = 'Dashboard',
+      menus,
+      Element.div());
 
-  window.console.log(collapses);
-  List<Element> responses = await Future.wait([navbar.render(), ...collapses.map((e) => e.render())]);
+  window.console.log(logs);
+  List<Element> responses =
+      await Future.wait([navbar.render(), ...logs.map((e) => e.render())]);
 
   BodyElement body = querySelector('#output') as BodyElement;
   body.insertBefore(responses[0], body.firstChild);
 
   DivElement logsContainer = querySelector('#logs_container') as DivElement;
-  List<Element> list = responses
-    .sublist(1)
-    .map(
-      (element) {
-        DivElement div = DivElement();
-        div.className = 'p-1';
-        div.append(element);
-        return div;
-      }
-    ).toList();
+  List<Element> list = responses.sublist(1).map((element) {
+    DivElement div = DivElement();
+    div.className = 'p-1';
+    div.append(element);
+    return div;
+  }).toList();
 
   logsContainer.children.addAll(list);
 }
