@@ -21,8 +21,8 @@ class Log {
 
 List<Collapse> logsWidget(List<Log> logs) {
   return logs.map((log) => Collapse(
-    Element.span()..text = log.header, 
-    Element.p()..text = log.body,
+    SpanElement()..text = log.header, 
+    ParagraphElement()..text = log.body,
   )).toList();
 } 
 
@@ -36,29 +36,35 @@ Future<void> main() async {
   ]);
 
   List<Menu> menus = [
-    Menu(Element.a()..text = "Logs", []),
-    Menu(Element.a()
-      ..text = "Usage"
-      ..className = "justify-between", 
+    Menu(
+      AnchorElement()
+        ..href = "/pages/logs"
+        ..text = "Logs", 
+      []
+    ),
+    Menu(
+      AnchorElement()
+        ..text = "Usage"
+        ..className = "justify-between", 
     [
       Menu(
-        Element.a()
+        AnchorElement()
           ..className = "bg-base-100"
           ..text = "CPU", 
         []
       ),
       Menu(
-        Element.a()
+        AnchorElement()
           ..className = "bg-base-100"
           ..text = "Memory", 
         []
       ),
     ]),
-    Menu(Element.a()..text = "Email", []),
+    Menu(AnchorElement()..text = "Email", []),
   ];
 
   Navbar navbar = Navbar(
-    Element.a()
+    AnchorElement()
       ..className = "btn btn-ghost normal-case text-xl"
       ..text = 'Dashboard', 
     menus,

@@ -12,7 +12,7 @@ final NodeValidatorBuilder _htmlValidator = NodeValidatorBuilder.common()
 Element htmlToElements(String html) {
     TemplateElement template = TemplateElement();
     template.setInnerHtml(html, validator: _htmlValidator);
-    return template.content?.children[0] ?? Element.div();
+    return template.content?.children[0] ?? DivElement();
 }
 
 abstract class Component {

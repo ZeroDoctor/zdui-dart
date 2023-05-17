@@ -21,8 +21,8 @@ webdev-install:
 	echo 'export PATH=$$PATH:$$HOME/.pub-cache/bin' >> ~/.bashrc
 	source ~/.bashrc
 
-.PHONY: tailwindcss-build
-tailwindcss-build:
+.PHONY: build-tailwindcss
+build-tailwindcss:
 	npx tailwindcss -i ./build/styles.css -o ./build/dist/output.css
 	
 .PHONY: init
