@@ -27,8 +27,7 @@ List<Collapse> logsWidget(List<Log> logs) {
 } 
 
 Future<void> main() async {
-
-  List<Collapse> collapses = logsWidget([
+  List<Collapse> logs = logsWidget([
     Log("Test", "support different loggers?"),
     Log("Okay", "learn more about json and dart"),
     Log("Fetch", "try fetching from api"),
@@ -71,23 +70,20 @@ Future<void> main() async {
     Element.div()
   );
 
-  window.console.log(collapses);
-  List<Element> responses = await Future.wait([navbar.render(), ...collapses.map((e) => e.render())]);
+  window.console.log(logs);
+  List<Element> responses =
+      await Future.wait([navbar.render(), ...logs.map((e) => e.render())]);
 
   BodyElement body = querySelector('#output') as BodyElement;
   body.insertBefore(responses[0], body.firstChild);
 
   DivElement logsContainer = querySelector('#logs_container') as DivElement;
-  List<Element> list = responses
-    .sublist(1)
-    .map(
-      (element) {
-        DivElement div = DivElement();
-        div.className = 'p-1';
-        div.append(element);
-        return div;
-      }
-    ).toList();
+  List<Element> list = responses.sublist(1).map((element) {
+    DivElement div = DivElement();
+    div.className = 'p-1';
+    div.append(element);
+    return div;
+  }).toList();
 
   logsContainer.children.addAll(list);
 }

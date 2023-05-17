@@ -30,4 +30,5 @@ init:
 	mkdir build || true
 	cd build && npx tailwindcss init
 	npm i
+	dart pub get
 	
