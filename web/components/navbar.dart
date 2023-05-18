@@ -1,12 +1,8 @@
 import 'dart:html';
 
 import '../structures/stack.dart';
+import '../util/svg.dart';
 import 'component.dart';
-
-final String svgDropArrow =
-    '<svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"/></svg>';
-final String svgMenu =
-    '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>';
 
 class Menu {
   final Element element;
@@ -18,10 +14,11 @@ class Menu {
 class Navbar extends Component {
   final Element _startElement;
   final List<Menu> _menus;
-  final Element _endElement; 
+  final Element _endElement;
   final String _className;
 
-  Navbar(this._startElement, this._menus, this._endElement, [this._className = '']);
+  Navbar(this._startElement, this._menus, this._endElement,
+      [this._className = '']);
 
   @override
   Future<Element> render() async {
@@ -63,7 +60,8 @@ class Navbar extends Component {
       menuBuffer.write(rootLi.outerHtml);
     }
 
-    return htmlToElements("""
+    return htmlToElements(
+        """
 <div class="navbar bg-base-100 z-50 $_className">
   <div class="navbar-start">
     <div class="dropdown">
